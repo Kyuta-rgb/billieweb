@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0c0d0b">
+  <meta name="description" content="Your own local Billie Eilish music, with live lyrics and optional videos.">
+  <meta property="og:title" content="BILLIE — Your music, your world">
+  <meta property="og:description" content="A local-first Billie Eilish library with online lyrics and optional videos.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="icons/icon-192.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.svg">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles.css">
+  <title>BILLIE — Your music, your world</title>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to music</a>
+  <div class="app-frame">
+    <aside class="sidebar" aria-label="Library navigation">
+      <a class="logo" href="#home"><span class="logo-mark">B</span><span>BILLIE<span class="acid">.</span></span></a>
+      <label class="search-box"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Search your music" aria-label="Search title, album or metadata"></label>
+      <nav class="primary-nav">
+        <button class="nav-item is-active" type="button" data-view="home"><span>⌂</span> Home</button>
+        <button class="nav-item" type="button" data-view="search"><span>⌕</span> Search</button>
+        <button class="nav-item" type="button" data-view="library"><span>▤</span> Your library</button>
+      </nav>
+      <div class="nav-divider"></div>
+      <div class="playlist-nav-head"><span>YOUR COLLECTION</span><button id="create-playlist" class="tiny-add" type="button" aria-label="Create playlist">+</button></div>
+      <nav id="playlist-nav" class="playlist-nav" aria-label="Your playlists"></nav>
+      <div class="sidebar-bottom">
+        <div class="sidebar-links">
+          <button id="theme-button" type="button">◐ Theme</button>
+          <button id="settings-button" type="button">⚙ Settings</button>
+        </div>
+        <p class="sidebar-caption">YOUR FILES. YOUR SOUND.<br>MADE WITH FEELING.</p>
+      </div>
+    </aside>
+
+    <main id="main" class="main-column">
+      <header class="topbar">
+        <div class="mobile-logo"><span class="logo-mark">B</span><strong>BILLIE<span class="acid">.</span></strong></div>
+        <div class="history-controls" aria-label="Page history"><button type="button" aria-label="Back" id="nav-back">‹</button><button type="button" aria-label="Forward" id="nav-forward">›</button></div>
+        <div id="connection-state" class="connection-state"><span class="connection-dot"></span><span>LOCAL LIBRARY</span></div>
+        <div class="topbar-actions"><button class="top-action install-button" id="install-app" type="button" hidden>↓ Install app</button><button class="avatar" id="open-settings-avatar" type="button" aria-label="Open settings">B</button></div>
+      </header>
+
+      <section class="home-hero" id="hero">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="live-dot"></span> YOUR MUSIC, YOUR WORLD</p>
+          <h1>Listen<br>closer<span class="acid">.</span></h1>
+          <p>Your favorite Billie songs, right here on your own terms. Local music that works offline. Lyrics and videos when you're connected.</p>
+          <div class="hero-buttons"><button class="btn-primary" id="play-all" type="button">▶ <span>Play all</span></button><button class="btn-quiet" id="shuffle-all" type="button">⤨ Shuffle</button></div>
+        </div>
+        <div class="hero-visual" aria-hidden="true"><div class="hero-ring ring-a"></div><div class="hero-ring ring-b"></div><div class="hero-letter">B</div><span class="hero-stamp">BILLIE<br>EILISH<br><b>✳</b></span><div class="hero-eq"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+        <div class="hero-foot"><span>PERSONAL LIBRARY · PRIVATE BY DEFAULT</span><span>01 — LISTEN</span></div>
+      </section>
+
+      <div id="server-notice" class="notice" hidden></div>
+      <section id="library-skeleton" class="library-skeleton" aria-label="Loading your music library" aria-busy="true">
+        <span class="skeleton-bar skeleton-heading"></span>
+        <span class="skeleton-bar"></span>
+        <span class="skeleton-bar"></span>
+        <span class="skeleton-bar"></span>
+        <span class="skeleton-bar"></span>
+      </section>
+      <section id="empty-state" class="empty-library" hidden>
+        <div class="empty-icon">♫</div><p class="eyebrow">YOUR MUSIC LIBRARY</p>
+        <h2>No songs found.</h2>
+        <p id="empty-message">No songs found in public/Billie. Add audio files to that folder and refresh.</p>
+        <button class="text-link" id="rescan-button" type="button" aria-label="Rescan music folder">Rescan</button>
+        <p class="empty-help">Supported: MP3, M4A, FLAC, WAV, OGG and AAC</p>
+      </section>
+
+      <section class="content-section" id="content-section" aria-live="polite">
+        <div id="view-heading" class="section-heading"><div><p class="eyebrow">PICK UP THE FEELING</p><h2>Recently played</h2></div><button class="text-link" type="button" data-view="recent">Show all</button></div>
+        <div id="recent-grid" class="cover-grid"></div>
+        <div id="albums-section" class="subsection"><div class="section-heading compact"><div><p class="eyebrow">FROM YOUR COLLECTION</p><h2>Albums</h2></div><button class="text-link" type="button" data-view="albums">Show all</button></div><div id="album-grid" class="cover-grid album-grid"></div></div>
+        <div id="favorites-section" class="subsection"><div class="section-heading compact"><div><p class="eyebrow">THE SONGS YOU KEEP CLOSE</p><h2>Made yours</h2></div><button class="text-link" type="button" data-view="favorites">Show all</button></div><div id="favorite-grid" class="cover-grid"></div></div>
+      </section>
+
+      <section id="library-section" class="library-section" hidden>
+        <div class="library-title-row"><div><p class="eyebrow" id="library-eyebrow">YOUR MUSIC</p><h1 id="library-title">All songs</h1></div><div class="library-actions"><label class="sort-label">SORT BY <select id="sort-select"><option value="title">Title</option><option value="album">Album</option><option value="added">Date added</option><option value="duration">Duration</option></select></label><button id="rescan-library" class="icon-action" type="button" title="Rescan folder" aria-label="Rescan music folder">⟳</button></div></div>
+        <div id="track-table-head" class="track-table-head"><span>#</span><span>TITLE</span><span>ALBUM</span><span>DATE ADDED</span><span><span aria-hidden="true">◷</span><span class="sr-only">Duration</span></span><span></span></div>
+        <div id="library-album-grid" class="cover-grid album-grid" hidden></div>
+        <div id="song-list" class="song-list" role="list" aria-label="Songs"></div>
+      </section>
+
+      <footer class="footer"><span>LOCAL MUSIC. PERSONAL MAGIC.</span><span>Unofficial fan project. Songs are played from my personal local files. Lyrics and videos are provided by third-party services.</span></footer>
+    </main>
+
+    <aside id="side-panel" class="side-panel" aria-label="Now playing panel">
+      <div class="panel-top"><span id="panel-title">NOW PLAYING</span><button id="panel-close" type="button" aria-label="Close side panel">×</button></div>
+      <div class="panel-tabs" role="tablist" aria-label="Player panels"><button type="button" role="tab" id="tab-now" aria-selected="true" data-panel="now">Now playing</button><button type="button" role="tab" id="tab-lyrics" aria-selected="false" data-panel="lyrics">Lyrics</button><button type="button" role="tab" id="tab-queue" aria-selected="false" data-panel="queue">Queue</button></div>
+      <div id="panel-now" class="panel-body now-panel" role="tabpanel" aria-labelledby="tab-now">
+        <div id="visualizer-wrap" class="visualizer-wrap"><canvas id="visualizer" aria-hidden="true"></canvas><img id="panel-cover" src="icons/icon-512.svg" alt=""><button class="art-fullscreen" id="art-fullscreen" type="button" aria-label="Expand cover and controls">⤢</button></div>
+        <div class="panel-song"><div><h2 id="panel-song-title">Nothing playing</h2><p id="panel-song-artist">Billie Eilish</p></div><button id="panel-heart" class="heart-button" type="button" aria-label="Add to favorites" aria-pressed="false">♡</button></div>
+        <div class="panel-quick-actions"><button id="show-lyrics" type="button">▤ Lyrics</button><button id="watch-video" type="button">▻ Watch video</button></div>
+        <div id="video-card" class="video-card" hidden><div id="video-host"></div><div class="video-card-actions"><button id="video-minimize" type="button" aria-pressed="false">▱ Mini player</button><button id="video-fullscreen" type="button">⛶ Fullscreen</button><button id="video-close" type="button">× Close</button></div></div>
+        <div id="panel-metadata" class="panel-metadata"><span>FILE</span><p id="panel-metadata-line">Your own music collection</p></div>
+      </div>
+      <div id="panel-lyrics" class="panel-body lyrics-panel" role="tabpanel" aria-labelledby="tab-lyrics" hidden>
+        <div class="lyrics-toolbar"><span id="lyrics-source">ONLINE LYRICS</span><label>SIZE <input id="lyrics-size" type="range" min="18" max="42" value="27" aria-label="Lyrics font size"></label></div>
+        <div id="lyrics-state" class="lyrics-state"><div class="lyrics-skeleton"><i></i><i></i><i></i><i></i></div><span>Waiting for a song…</span></div>
+        <div id="lyrics-scroll" class="lyrics-scroll" hidden></div>
+        <div id="lyrics-plain" class="lyrics-plain" hidden></div>
+        <div id="lyrics-bottom" class="lyrics-bottom" hidden><button id="lyrics-retry" type="button">↻ Retry lyrics</button><button id="offset-button" type="button">± Sync offset</button><a id="genius-link" target="_blank" rel="noopener noreferrer">Search on Genius ↗</a></div>
+        <p class="lyrics-attribution">Lyrics provided by third-party services. Not stored by this app.</p>
+      </div>
+      <div id="panel-queue" class="panel-body queue-panel" role="tabpanel" aria-labelledby="tab-queue" hidden><div class="queue-heading"><h2>Up next</h2><button id="clear-queue" type="button">Clear</button></div><div id="queue-list" class="queue-list"></div><div id="playlist-editor" class="playlist-editor" hidden></div></div>
+    </aside>
+  </div>
+
+  <section id="player-bar" class="player-bar" aria-label="Music player controls">
+    <div class="bar-current"><button id="bar-expand" class="bar-cover-button" type="button" aria-label="Open now playing"><img id="bar-cover" src="icons/icon-192.svg" alt=""></button><div class="bar-song"><strong id="bar-song-title">Nothing playing</strong><span id="bar-song-artist">Billie Eilish</span></div><button id="bar-heart" class="heart-button" type="button" aria-label="Add current song to favorites" aria-pressed="false">♡</button></div>
+    <div class="bar-center"><div class="transport"><button id="shuffle-button" class="transport-button" type="button" aria-label="Shuffle off" aria-pressed="false">⤨</button><button id="previous-button" class="transport-button" type="button" aria-label="Previous track">|◀</button><button id="play-button" class="play-button" type="button" aria-label="Play" disabled>▶</button><button id="next-button" class="transport-button" type="button" aria-label="Next track">▶|</button><button id="repeat-button" class="transport-button" type="button" aria-label="Repeat off" aria-pressed="false">↻</button></div><div class="seek-line"><span id="elapsed">0:00</span><input id="seek" type="range" min="0" max="1000" value="0" aria-label="Seek through song" disabled><span id="duration">0:00</span></div></div>
+    <div class="bar-right"><button id="sleep-button" class="transport-button" type="button" aria-label="Sleep timer">◷</button><label class="speed-label"><span class="sr-only">Playback speed</span><select id="speed"><option value="0.5">0.5×</option><option value="0.75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="1.75">1.75×</option><option value="2">2×</option></select></label><button id="mute-button" class="transport-button" type="button" aria-label="Mute">◖</button><input id="volume" type="range" min="0" max="100" value="75" aria-label="Volume"><button id="lyrics-bar-button" class="transport-button lyrics-bar-button" type="button" aria-label="Show lyrics">▤</button><button id="queue-bar-button" class="transport-button" type="button" aria-label="Show queue">☷</button></div>
+  </section>
+
+  <div id="toast-region" class="toast-region" role="status" aria-live="polite"></div>
+  <div id="modal-backdrop" class="modal-backdrop" hidden><section id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" tabindex="-1"><button id="modal-close" class="modal-close" type="button" aria-label="Close dialog">×</button><p class="eyebrow" id="modal-eyebrow">BILLIE PLAYER</p><h2 id="modal-title"></h2><div id="modal-content"></div></section></div>
+  <div id="live-region" class="sr-only" aria-live="polite"></div>
+  <script src="https://cdn.jsdelivr.net/npm/jsmediatags@3.9.7/dist/jsmediatags.min.js" defer></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
